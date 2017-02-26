@@ -3,6 +3,8 @@ Vue.component('chat-message', require('./components/ChatMessage.vue'));
 Vue.component('chat-log', require('./components/ChatLog.vue'));
 Vue.component('chat-composer', require('./components/ChatComposer.vue'));
 
+import toastr from 'toastr';
+
 const app = new Vue({
     el: '#app',
     data: {
@@ -27,9 +29,11 @@ const app = new Vue({
             })
              .joining((user) => {
                 this.usersInRoom.push(user);
+                toastr.success('El usuario: '+user.name+' se acaba de unir al Chat', 'Usuario ingresando');
             })
             .leaving((user) => {
                 this.usersInRoom = this.usersInRoom.filter(u => u != user)
+                toastr.warning('El usuario: '+user.name+' se acaba de ir del Chat', 'Usuario saliendo')
             })
             .listen('MessagePosted', (e) => {
                 this.messages.push({
