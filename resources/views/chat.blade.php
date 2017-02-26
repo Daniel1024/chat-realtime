@@ -13,10 +13,10 @@
                     <span class="badge pull-right">@{{ usersInRoom.length }}</span>
                 </div>
                 <div class="panel-body">
-                    <div class="row">
+                    <div class="row" style="height: calc(100vh - 311px); overflow: auto;">
                         <chat-log :messages="messages"></chat-log>
-                        <hr>
                     </div>
+                    <hr>
                     <chat-composer @messagesent='addMessage'></chat-composer>
                 </div>
             </div>

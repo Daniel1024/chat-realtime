@@ -5,6 +5,8 @@ Vue.component('chat-composer', require('./components/ChatComposer.vue'));
 
 import toastr from 'toastr';
 
+let scroll = false;
+
 const app = new Vue({
     el: '#app',
     data: {
@@ -15,12 +17,15 @@ const app = new Vue({
         addMessage(message) {
             axios.post('/message',{message: message}).then(response => {
                 this.messages.push(response.data);
+                scroll = true;
             });
         }
     },
     created() {
-        axios.get('/messages').then(response => {
+        //console.log('created');
+        window.axios.get('/messages').then(response => {
             this.messages = response.data;
+            scroll = true;
         });
 
         window.Echo.join('chatroom')
@@ -40,6 +45,17 @@ const app = new Vue({
                     message: e.message.message,
                     user: e.user
                 });
+                scroll = true;
             });
+    },
+    updated() {
+        if (scroll) {
+            $("#message-area")
+                .parent()
+                .animate({
+                    scrollTop: $("#message-area").height()
+                }, 800);
+            scroll = false;
+        }
     }
 });

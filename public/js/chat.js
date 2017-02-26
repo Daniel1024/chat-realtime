@@ -10653,7 +10653,7 @@ function applyToTag (styleElement, obj) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function($) {Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_toastr__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_toastr___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_toastr__);
 
@@ -10662,6 +10662,8 @@ Vue.component('chat-log', __webpack_require__(47));
 Vue.component('chat-composer', __webpack_require__(46));
 
 
+
+var scroll = false;
 
 var app = new Vue({
     el: '#app',
@@ -10675,14 +10677,17 @@ var app = new Vue({
 
             axios.post('/message', { message: message }).then(function (response) {
                 _this.messages.push(response.data);
+                scroll = true;
             });
         }
     },
     created: function created() {
         var _this2 = this;
 
-        axios.get('/messages').then(function (response) {
+        //console.log('created');
+        window.axios.get('/messages').then(function (response) {
             _this2.messages = response.data;
+            scroll = true;
         });
 
         window.Echo.join('chatroom').here(function (users) {
@@ -10700,9 +10705,19 @@ var app = new Vue({
                 message: e.message.message,
                 user: e.user
             });
+            scroll = true;
         });
+    },
+    updated: function updated() {
+        if (scroll) {
+            $("#message-area").parent().animate({
+                scrollTop: $("#message-area").height()
+            }, 800);
+            scroll = false;
+        }
     }
 });
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
 
 /***/ }),
 /* 15 */,
@@ -11433,7 +11448,10 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "chat-log"
+    staticClass: "chat-log",
+    attrs: {
+      "id": "message-area"
+    }
   }, [_vm._l((_vm.messages), function(message) {
     return _c('chat-message', {
       attrs: {
