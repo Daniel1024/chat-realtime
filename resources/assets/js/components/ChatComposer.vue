@@ -5,6 +5,7 @@
         v-model="messageText"
         @keyup.enter="sendMessage"
         type="text"
+        name="message"
         placeholder="Start typing your message...">
     <button class="btn btn-primary"
         @click.prevent="sendMessage">Send</button>
