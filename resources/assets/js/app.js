@@ -36,15 +36,15 @@ const app = new Vue({
         });
 
         window.Echo.join('chatroom')
-            /*.here((users) => {
+            .here((users) => {
                 this.usersInRoom = users;
             })
-            .joining((user) => {
+             .joining((user) => {
                 this.usersInRoom.push(user);
             })
             .leaving((user) => {
                 this.usersInRoom = this.usersInRoom.filter(u => u != user)
-            })*/
+            })
             .listen('MessagePosted', (e) => {
                 this.messages.push({
                     message: e.message.message,

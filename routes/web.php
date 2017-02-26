@@ -40,7 +40,8 @@ Route::group(['middleware' => 'auth'], function () {
             ]);
 
         // Announce that a new message has been posted
-        broadcast(new MessagePosted($message, auth()->user()))->toOthers();
+        broadcast(new MessagePosted($message, auth()->user()))
+            ->toOthers();
 
         return [
             'message'   => $message->message,
